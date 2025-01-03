@@ -1,0 +1,408 @@
+#pragma once
+
+#include <process.h>
+#include <string>
+#include <set>
+#define IMGUI_DEFINE_MATH_OPERATORS
+#include "imgui.h"
+#include "backends/imgui_impl_win32.h"
+#include "backends/imgui_impl_dx11.h"
+#include "ImGuizmo.h"
+#include <thread>
+
+/* 클라이언트에서 제작하는 모든 클래스들이 공통적으로 자주 사용하는 정의들을 모아둔다. */
+namespace Client
+{
+	const unsigned int		g_iWinSizeX = 1280;
+	const unsigned int		g_iWinSizeY = 720;
+
+	enum LEVEL { LEVEL_STATIC, LEVEL_LOADING, LEVEL_LOGO, LEVEL_GAMEPLAY, LEVEL_VANA, LEVEL_SVART , LEVEL_HEL, LEVEL_BOSSRUSH, LEVEL_TOOL, LEVEL_ENDING ,LEVEL_END };
+
+	enum ITEM_TEXURE_ID
+	{
+		ITEM_CONSUME_ABILITY,
+		ITEM_CONSUME_CLIP,
+		ITEM_CONSUME_CRITICAL,
+		ITEM_CONSUME_DAMAGE,
+		ITEM_CONSUME_HEAL_50,
+		ITEM_CONSUME_HEAL_25,
+		ITEM_CONSUME_MAX_HP,
+		ITEM_CONSUME_KEY,
+		ITEM_CONSUME_LUCK,
+		ITEM_CONSUME_LUCK_4,
+		ITEM_CONSUME_HEAL_75,
+		ITEM_CONSUME_COINBAG,
+		ITEM_CONSUME_RANGE,
+		ITEM_CONSUME_SHIELD,
+		ITEM_CONSUME_CONVERTER,
+		ITEM_CONSUME_SKELETONKEY,
+		ITEM_CONSUME_SPEED,
+		ITEM_AIMNG_HEAD,
+		ITEM_ARMOR_CHEST,
+		ITEM_CHAIN_CHEST,
+		ITEM_CHEST_BLANK,
+		ITEM_CHEST_CURSED,
+		ITEM_CHEST_INFINITE,
+		ITEM_CHEST_JUMP_STRENGTH,
+		ITEM_CHEST_MAGIC,
+		ITEM_CHEST_RANGE,
+		ITEM_CHEST_SLOWPROJECTILE,
+		ITEM_CHEST_TALLSHIELD,
+		ITEM_CHORD_HEAD,
+		ITEM_CLEAVING_GLOVES,
+		ITEM_CONSUME_GLOVES,
+		ITEM_COWBOY_BOOTS,
+		ITEM_CREEP_BOOTS,
+		ITEM_CROWN,
+		ITEM_DAMAGE_BOOTS,
+		ITEM_DOC_BOOTS,
+		ITEM_DOUBLE_GLOVES,
+		ITEM_EMPTY_ARMS,
+		ITEM_EMPTY_FEET,
+		ITEM_EMPTY_HEAD,
+		ITEM_EMPTY_SHEILD,
+		ITEM_EXPOLISIVE_HAT,
+		ITEM_FLAY_HAT,
+		ITEM_FOOT_CLOGS,
+		ITEM_MAGICAL_BOOTS,
+		ITEM_FOOT_SANDALS,
+		ITEM_FOOT_SHINPADS,
+		ITEM_GLOVE_DWARFBRACELET,
+		ITEM_GLOVE_EAGLE,
+		ITEM_GLOVE_MEDALLION,
+		ITEM_GLOVE_NUT,
+		ITEM_GLOVE_SIXSHOOTER,
+		ITEM_GOODNESS_GLOVES,
+		ITEM_HEAD_COVEREDHORN,
+		ITEM_HEAD_FLUFFY,
+		ITEM_HEAD_MOON,
+		ITEM_HEAD_ORC,
+		ITEM_HEAD_ROMAN,
+		ITEM_HEAVY_BOOTS,
+		ITEM_HELMET_TEST,
+		ITEM_HIGH_GLOVES,
+		ITEM_JUMP_BOOTS,
+		ITEM_KINGHT_BOOTS,
+		ITEM_MULTIPLIYER_HEAD,
+		ITEM_PENETRATE_GLOVES,
+		ITEM_RAGE_HEAD,
+		ITEM_COIN_GLOVE,
+		ITEM_REDUCT_CHEST,
+		ITEM_REFLECT_HEAD,
+		ITEM_REGEN_CHEST,
+		ITEM_REVIVE_CHEST,
+		ITEM_SHOTS_HEAD,
+		ITEM_SKATES,
+		ITEM_SKULL_CHEST,
+		ITEM_SLOW_GLOVES,
+		ITEM_SPEED_BOOTS,
+		ITEM_SPIKE_CHEST,
+		ITEM_SUN_CHEST,
+		ITEM_SWAP_HEAD,
+		ITEM_TRAMPLING_BOOTS,
+		ITEM_TWICE_GLOVES,
+		ITEM_VEMP_HEAD,
+		ITEM_WALL_GLOVE,
+
+		ITEM_END
+	};
+
+	enum WEAPON_TEXTURE_ID
+	{
+		WEAPON_PISTOL,
+		WEAPON_SHOTGUN_PISTOL,
+		WEAPON_HAND,
+		WEAPON_PUMP_SHOTGUN,
+		WEAPON_REVOLVER,
+		WEAPON_SAWN_OFF_SHOTGUN,
+		WEAPON_BURST_SMG,
+		WEAPON_GRENADE_LAUNCHER,
+		WEAPON_CHARGE_PISTOL,
+		WEAPON_ENERGY_CANNON,
+		WEAPON_GAUS_CANNON,
+		WEAPON_MINIGUN,
+		WEAPON_LEVER_ACTION,
+		WEAPON_ROCKET_LAUNCHER,
+		WEAPON_HAUNTED_REVOLVER,
+		WEAPON_RAY_GUN,
+		WEAPON_END
+	};
+
+	enum ABILITY_TEXTURE_ID
+	{
+		ABILITY_EMPTY,
+		ABILITY_DASH,
+		ABILITY_S_BLOCK,
+		ABILITY_S_BURST,
+		ABILITY_S_CLAP,
+		ABILITY_S_COIN,
+		ABILITY_S_DAMAGE_ALL,
+		ABILITY_S_FIREBALL,
+		ABILITY_S_FLACK,
+		ABILITY_S_FREEZE,
+		ABILITY_S_MANASHIELD,
+		ABILITY_S_MARKOFDEATH,
+		ABILITY_S_SNIPE,
+		ABILITY_S_SUMMONBARREL,
+		ABILITY_S_TELEPORT,
+		ABILITY_S_UNREANTLING,
+		ABILITY_S_VAMP,
+		ABILITY_U_ALLY,
+		ABILITY_U_CONVERTTOCOIN,
+		ABILITY_U_DISCOUNT,
+		ABILITY_U_CHEST,
+		ABILITY_U_SHIELD,
+		ABILITY_U_GRANADE,
+		ABILITY_U_HEAL,
+		ABILITY_U_KAMAKAZE,
+		ABILITY_U_LUCK,
+		ABILITY_U_MEGASHOOT,
+		ABILITY_U_MIDAS,
+		ABILITY_U_REGEN,
+		ABILITY_U_REMOTEBANK,
+		ABILITY_U_SPEED,
+		ABILITY_U_QUEST,
+
+		ABILITY_END
+	};
+
+	enum ROOM_TEXTURE_ID
+	{
+		ROOM_DEFAULT,
+		ROOM_ARMORY,
+		ROOM_BANK,
+		ROOM_BLACKMARKET,
+		ROOM_BOSS,
+		ROOM_CHALLENGE,
+		ROOM_CHOICE,
+		ROOM_COINAGE,
+		ROOM_EPICSTATUE,
+		ROOM_GAMBLE,
+		ROOM_HERO,
+		ROOM_LIBRARY,
+		ROOM_HEAL,
+		ROOM_PRESTIGE,
+		ROOM_REROLL,
+		ROOM_SHOP,
+		ROOM_CHSET,
+		ROOM_UNEXPLORED,
+		ROOM_START,
+
+		ROOM_END,
+	};
+
+	enum ROOM_PATH_TEXTURE_ID
+	{
+		RP_BOTTOM,
+		RP_BOTTOM_CLOSED,
+		RP_LEFT,
+		RP_LEFT_CLOSED,
+		RP_RIGHT,
+		RP_RIGHT_CLOSED,
+		RP_TOP,
+		RP_TOP_CLOSED,
+		RP_END,
+	};
+	
+	enum CROSSHAIR_ID
+	{
+		CROSSHAIR_DEFAULT,
+		CROSSHAIR_BAD,
+		CROSSHAIR_AIM,
+		CROSSHAIR_DAMAGED,
+	};
+
+	enum SWAP_ID
+	{
+		SWAP_ITEM,
+		SWAP_WEAPON,
+		SWAP_ABIL,
+	};
+	struct BGM_SEQUENCE
+	{
+		std::wstring strTag;
+		int	 iBeat = 0;
+		BGM_SEQUENCE* pNext = nullptr;
+	};
+	enum SLOT_ID
+	{
+		SLOT_ARM,
+		SLOT_HEAD,
+		SLOT_CHEST,
+		SLOT_BOOTS,
+		SLOT_END
+	};
+
+	enum class SHADER_VTXPOS_PASS
+	{
+		Default,
+		HpBar,
+		Blend,
+		RoundProgress,
+		ShakeVertical,
+		BlendPoint,
+		FromRight,
+		FromLeft, 
+		Emission,
+		Trail,
+		TrailDecal,
+		TrailDistortion,
+		Sonar,
+		BlockLight,
+		BlockLightEven,
+	};
+	enum class SHADER_VTXNOR_PASS
+	{
+		Default,
+		MuzzleFlash,
+		AlphaBlend,
+		SmokeTrail,
+		Wall,
+		Charge,
+		Rune,
+		MaskToDiffuse,
+		ColorBoost
+	};
+	enum class SHADER_VTXMESH_PASS
+	{
+		Default,
+		Mirror_X,
+		AlphaBlend,
+		EffectCCW,
+		EffectSweep,
+		EffectHexShield,
+		EffectTeardrop,
+		EffectMaskToDiffuse,
+		EffectSpace,
+		Emission,
+		Color,
+		Smoke,
+		PureEmission,
+		DecalToDiffuse,
+		DissolveDecal,
+		Distortion,
+		DistortionVertex,
+		DefaultEmission,
+		GullveigField,
+		DissolveMaskNoise,
+		Water,
+	};
+	enum class SHADER_VTXANIMMESH_PASS
+	{
+		Default,
+		Mirror_X,
+		ColorBoost,
+		TakeHit,
+		Emission,
+		Dissolve,
+		MonoColor,
+		RimEmmision,
+		Rim,
+		ColorOnly,
+		Disintegration,
+	};
+	enum class SHADER_VTXRECTINSTANCE_PASS
+	{
+		Default,
+		HpBar,
+		Blend,
+		RoundProgress,
+		ShakeVertical,
+		BlendPoint,
+		FromRight,
+		FromLeft,
+	};
+	enum class SHADER_VTXPOINTINSTANCE_PASS
+	{
+		Default,
+		HpBar,
+		Blend,
+		RoundProgress,
+		ShakeVertical,
+		BlendPoint,
+		FromRight,
+		FromLeft,
+		DecalToDiffuse,
+	};
+	enum COLLISION_GROUP
+	{
+		CG_PLAYER,
+		CG_PLAYER_PROJECTILE,
+		CG_PLAYER_PARRY,
+
+		CG_MONSTER,
+		CG_MONSTER_CONTACT,
+		CG_MONSTER_PROJECTILE,
+
+		CG_ITEM,
+		CG_WEAPON,
+
+		CG_END
+	};
+	enum BM_TYPE
+	{
+		BM_DEFAULT,
+		BM_DODGE,
+		BM_BOLD,
+		BM_JUMP,
+		BM_SMALL,
+		BM_END,
+	};
+	enum PLAYER_CHARACTER
+	{
+		PC_GOLL,
+		PC_FREY,
+		PC_HILDR,
+		PC_RUN,
+		PC_END
+	};
+
+
+	class ITEM_UI_DESC
+	{
+	public:
+		SWAP_ID  eID = SWAP_ITEM;
+		unsigned int     iItemIdx = 0;
+		int      iPrice = 0;
+		bool     bKey = false;
+		std::wstring  strItemName = L"";
+		std::wstring  strItemDesc = L"";
+	};
+
+	enum DAMAGE_TYPE
+	{
+		DMG_DEFAULT,
+		DMG_PIERCE,
+		DMG_EVADABLE,
+		DMG_EXPLODE,
+
+		DMG_END
+	};
+
+	enum class PARTICLE_MOVEMENT
+	{
+		SPREAD,
+		DROP,
+		FOUNTAIN,
+		RISING,
+		CYCLE,
+		ORBITAL,
+	};
+	PLAYER_CHARACTER s_ePC = PC_GOLL;
+
+}
+#define Asgard_1 L"Asgard_1"
+#define Asgard_1_Boss L"Asgard_1_Boss"
+
+#define DEFAULTNORMAL CBeat_Manager::Get_Instance()->Get_DefaultNormal()
+#define DEFAULTORM	  CBeat_Manager::Get_Instance()->Get_DefaultORM()
+#define DEFAULTNOISE	  CBeat_Manager::Get_Instance()->Get_DefaultNoise()
+
+extern HWND				g_hWnd;
+extern HINSTANCE		g_hInst;
+
+
+
+
+
+using namespace Client;

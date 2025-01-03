@@ -1,0 +1,22 @@
+[Room_Tag] Asgard_Shop
+[Model_Tag] Prototype_Component_Model_Asgard_Shop
+[North] 0
+[South] 1
+[East] 0
+[West] 0
+[Player_Transform]
+1 0 0 0
+0 1 0 0
+0 0 1 0
+10 2 10 1
+[Door_Transform]
+(행렬)
+[Num_Monster_Type] 3
+[Monster_Tag] Prototype_GameObject_Bat
+[Num] 3
+[Transform]
+(행렬 3개)
+[Monster_Tag] safdaksd
+...
+
+
