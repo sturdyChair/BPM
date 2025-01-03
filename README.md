@@ -1,4 +1,4 @@
-# DirectX11 모작 개인 포트폴리오 : BPM : Bullet Per Minute
+# DirectX11 모작 개인 포트폴리오 : BPM : Bullets Per Minute
 
 ![img](https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1286350/header.jpg?t=1667228772)
 
