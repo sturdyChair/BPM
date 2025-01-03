@@ -9,4 +9,4 @@
 장르 : 1인칭 리듬 액션 어드벤처
 
 기술 스택:
-C, C++, STL, FMOD, Win API, OpenCV, DLL, DirectX 11, vcpkg, HLSL, Effects11, Assimp, ImGui, ImGuizmo, DirectXTK, DirectMath, Nvidia PhysX 5.3 , DLL
+C, C++, STL, FMOD, Win API, OpenCV, DLL, DirectX 11, HLSL, Effects11, Assimp, ImGui, ImGuizmo, DirectXTK, DirectMath, Nvidia PhysX 5.3 , DLL
