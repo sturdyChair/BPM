@@ -1,6 +1,6 @@
 # DirectX11 모작 개인 포트폴리오 : BPM : Bullets Per Minute
 
-![img](https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1286350/header.jpg?t=1667228772)
+![img](https://github.com/sturdyChair/asset/blob/main/bpm/ChessLight.gif)
 
 리소스가 포함되어있지 않은 코드 공개용 리포지토리입니다. 정상적으로 동작하지 않을 가능성이 매우 높습니다.
 
